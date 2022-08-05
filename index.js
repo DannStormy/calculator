@@ -1,14 +1,63 @@
-let clear = document.querySelector(".clear");
-let pN = document.querySelector(".pN");
-let percent = document.querySelector(".percent");
-let divide= document.querySelector(".division");
-let multiply = document.querySelector(".multiply");
-let subtract = document.querySelector(".subtract");
-let add = document.querySelector(".add");
-let dot = document.querySelector(".dot");
-let backspace = document.querySelector(".backspace");
-let equalTo = document.querySelector(".equalsto");
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    let allNumbers = document.querySelectorAll(".number");
+    let allOperators = document.querySelectorAll(".operator")
+    let calcDisplay = document.querySelector(".final-result")
+    let prevCalc = document.querySelector(".calc-display")
+    let finalVal = 0;
+    let prevResult = 0;
+    let calculationArr = [];
+    // clear.addEventListener('click', ()=> {
+    //   alert("I'm working, clear stuff")
+    //   console.log(allNum)
+    // })
 
-clear.addEventListener('click', ()=>{
-  alert("I'm working, clear stuff")
-})
+    for (let i = 0; i < allNumbers.length; i++) {
+      allNumbers[i].addEventListener('click', displayNum);
+    }
+    for (let i = 0; i < allOperators.length; i++){
+      allOperators[i].addEventListener('click', checkOperators)
+    }
+
+    function displayNum (val){
+      let value = val.target.innerHTML;
+      calculationArr.push(value);
+      calcDisplay.innerHTML = value;
+      console.log(calculationArr)
+    }
+
+    function checkOperators(val){
+      let value = val.target.innerHTML;
+      switch(value) {
+        case "/":
+        case "-":
+        case "*":
+        case "+":
+        case "%":
+          calculationArr.push(value);
+          break;
+        case "=":
+          finalVal = eval(calculationArr.join(''));
+          calcDisplay.innerHTML = finalVal;
+          prevCalc.innerHTML = calculationArr.join('');
+
+          // prevCalc = calculationArr;
+          // finalVal = eval(calculationArr)
+          // calcDisplay.innerHTML = finalVal;
+          console.log(finalVal)
+          break;
+        case "C":
+          calculationArr = [];
+      }
+    }
+
+
+
+
+
+
+
+
+
+  })
+})();
