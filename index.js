@@ -5,6 +5,7 @@
     let calcDisplay = document.querySelector(".final-result");
     let prevCalc = document.querySelector(".calc-display");
     let pN = document.querySelector(".positive-negative");
+    let backspace = document.querySelector(".backspace");
 
     let operand1 = '';
     let operand2 = '';
@@ -33,6 +34,12 @@
       return '-' + numString;
     }
 
+    function popValues(numString){
+      let newNum = numString.split('');
+      newNum.pop();
+      return newNum.join('');
+    }
+
     for (let i = 0; i < allNumbers.length; i++) {
       allNumbers[i].addEventListener('click', displayNum);
     }
@@ -56,11 +63,23 @@
 
       if (operator) {
         operand2 = positiveNegative(operand2);
-        calcDisplay.innerHTML = operand2;
+        calcDisplay.innerHTML =  operand2;
         return;
       }
 
       operand1 = positiveNegative(operand1);
+      calcDisplay.innerHTML = operand1;
+    });
+
+    backspace.addEventListener('click', () => {
+      if (!getActiveOperand()) return;
+
+      if(operator) {
+        operand2 = popValues(operand2);
+        calcDisplay.innerHTML = operand2;
+        return;
+      }
+      operand1 = popValues(operand1)
       calcDisplay.innerHTML = operand1;
     });
 
