@@ -24,12 +24,23 @@
     }
 
     for (let i = 0; i < allOperators.length; i++){
-      allOperators[i].addEventListener('click', checkOperators)
+      allOperators[i].addEventListener('click', (e) => {
+        const activeOperand = operator ? operand2 : operand1;
+        if (!activeOperand && e.target.innerHTML === '-') {
+          displayNum(e);
+          return;
+        }
+        checkOperators(e);
+      })
     }
 
     function displayNum (val) {
-
       const value = val.target.innerHTML;
+      const activeOperand = operator ? operand2 : operand1;
+      //if value is decimal
+      if(value === "." && activeOperand.indexOf(value) >= 0){
+        return;
+      }
       operator ? operand2 += value : operand1 += value;
       calcDisplay.innerHTML = operator ? operand2 : operand1;
     }
@@ -38,6 +49,10 @@
       operand1 = '';
       operand2 = '';
       operator = '';
+    }
+
+    function round(num) {
+      return Math.round((num + Number.EPSILON) * 100) / 100;
     }
 
     function checkOperators(val) {
@@ -70,7 +85,7 @@
       };
 
       // Calculate
-      result = `${operators[operator](parseFloat(operand1), parseFloat(operand2))}`;
+      result = `${round(operators[operator](parseFloat(operand1), parseFloat(operand2)))}`;
       // result = Number(result.toFixed(1));
       console.log(result)
       prevCalc.innerHTML = `${operand1} ${operator} ${operand2}`;
@@ -81,15 +96,6 @@
         operand1 = result;
         operator = value;
       }
-    }
-    decimal.onclick = () => {
-      if(!operand1.includes(".")){
-        operand1+=".";
-      }else{
-        operand2+=".";
-      }
-      calcDisplay.innerHTML = operand1;
-      calcDisplay.innerHTML = operand2;
     }
   })
 })();
