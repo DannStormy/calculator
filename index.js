@@ -4,7 +4,7 @@
     let allOperators = document.querySelectorAll(".operator");
     let calcDisplay = document.querySelector(".final-result");
     let prevCalc = document.querySelector(".calc-display");
-    let decimal = document.querySelector(".decimal");
+    let pN = document.querySelector(".positive-negative");
 
     let operand1 = '';
     let operand2 = '';
@@ -19,24 +19,54 @@
       '%': (a, b) => a % b,
     };
 
+    function getActiveOperand() {
+      return operator ? operand2 : operand1;
+    }
+
+    function positiveNegative(numString) {
+      if (numString.indexOf('-') === 0) {
+        const numStringArray = numString.split('');
+        numStringArray.splice(0, 1);
+        return numStringArray.join('');
+      }
+
+      return '-' + numString;
+    }
+
     for (let i = 0; i < allNumbers.length; i++) {
       allNumbers[i].addEventListener('click', displayNum);
     }
 
     for (let i = 0; i < allOperators.length; i++){
       allOperators[i].addEventListener('click', (e) => {
-        const activeOperand = operator ? operand2 : operand1;
+        const activeOperand = getActiveOperand();
         if (!activeOperand && e.target.innerHTML === '-') {
           displayNum(e);
           return;
         }
+
         checkOperators(e);
       })
     }
 
+    pN.addEventListener('click', () => {
+      if (result && !operand1) {
+        operand1 = result;
+      }
+
+      if (operator) {
+        operand2 = positiveNegative(operand2);
+        calcDisplay.innerHTML = operand2;
+        return;
+      }
+
+      operand1 = positiveNegative(operand1);
+      calcDisplay.innerHTML = operand1;
+    });
+
     function displayNum (val) {
       const value = val.target.innerHTML;
-      const activeOperand = operator ? operand2 : operand1;
+      const activeOperand = getActiveOperand();
       //if value is decimal
       if(value === "." && activeOperand.indexOf(value) >= 0){
         return;
@@ -86,8 +116,6 @@
 
       // Calculate
       result = `${round(operators[operator](parseFloat(operand1), parseFloat(operand2)))}`;
-      // result = Number(result.toFixed(1));
-      console.log(result)
       prevCalc.innerHTML = `${operand1} ${operator} ${operand2}`;
       resetOperands();
       calcDisplay.innerHTML = result;
