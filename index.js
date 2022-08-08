@@ -19,7 +19,7 @@
       '+': (a, b) => a + b,
       '*': (a, b) => a * b,
       '-': (a, b) => a - b,
-      '/': (a, b) => a / b,
+      '÷': (a, b) => a / b,
       '%': (a, b) => a % b,
     };
 
@@ -127,6 +127,7 @@
     }
 
     function checkOperators(val) {
+      // val.classList.remove('active');
       //get value from clicked button
       let value = val.target.innerHTML;
 
