@@ -20,7 +20,7 @@
       '*': (a, b) => a * b,
       '-': (a, b) => a - b,
       '÷': (a, b) => a / b,
-      '%': (a, b) => a % b,
+      // '%': (a, b) => a % b,
     };
 
     //check if operator is clicked, if true, return operand2, else operand1
@@ -61,6 +61,12 @@
           displayNum(e);
           return;
         }
+        if (e.target.innerHTML === '%' && operand1){
+          result = operand1/100;
+          operand1 = result;
+          calcDisplay.innerHTML = result;
+        }
+
         //else, run checkOperators func
         checkOperators(e);
       })
